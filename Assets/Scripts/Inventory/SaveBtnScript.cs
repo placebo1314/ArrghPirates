@@ -37,32 +37,12 @@ public class SaveBtnScript : MonoBehaviour
 					{
 						Vector3 shipSlotVec = GetSonByIndex(ship, slotNo).GetComponent<RectTransform>().transform.position;
 						pirateGameObject.transform.position = shipSlotVec;
+						pirateGameObject.GetComponent<PirateScript>().shipNumber = pirate.shipNumber;
 						slotNo++;
 					}
 				}
 			}
 		}
-
-		//if(loadedData != null)
-		//{
-		//foreach(var pirate in loadedData.pirates)
-		//GameObject ship = null;
-		//if(loadedData.pirate1 != 0)
-		//{
-		//if(loadedData.pirate1 == 1)
-		//ship = ship1;
-		//else
-		//ship = ship2;
-		//Vector3 shipSlotVec = GetSonByIndex(ship, 0).GetComponent<RectTransform>().transform.position;
-		//pirate1.transform.position = shipSlotVec;
-		//}
-		//}
-		//Debug.Log(shipSlotVec);
-
-		//if(loadedData.pirate2 != 0)
-		//if(loadedData.pirate3 != 0)
-		//if(loadedData.pirate4 != 0)
-		//Debug.Log(GetSonByIndex(ship1, 1).transform);
 	}
 
     public void SaveData()

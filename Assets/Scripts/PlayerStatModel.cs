@@ -7,18 +7,21 @@ using System.IO;
 [Serializable]
 public class PlayerStatModel
 {
-    public int pirate1; //PRIVATE ! ! !
-    public int pirate2;
-    public int pirate3;
-    public int pirate4;
+    //PRIVATE ! ! !
+	public List<Dictionary<string, string>> pirates = new List<Dictionary<string, string>>();
+	public List<Dictionary<string, string>> ships = new List<Dictionary<string, string>>();
     
         
-    public PlayerStatModel(int pirate1, int pirate2, int pirate3, int pirate4)
+    public PlayerStatModel(List<Dictionary<string, string>> listOfPirates, List<Dictionary<string, string>> inputShips) 
     {
-        this.pirate1 = pirate1;
-        this.pirate2 = pirate2;
-        this.pirate3 = pirate3;
-        this.pirate4 = pirate4;
+		foreach(var ship in inputShips)
+			this.ships.Add(ship);
+		foreach(var pirate in listOfPirates)
+			this.pirates.Add(pirate);
+		
+    }
+    public PlayerStatModel()
+    {
     }
     
 }

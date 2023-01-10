@@ -1,36 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class ShipScript : MonoBehaviour
 {
-    [SerializeField] private int shipNumber;
-    [SerializeField] private int damage;
-    [SerializeField] private int armor;
-    [SerializeField] private int watchDistance;
-    [SerializeField] private int shootDistance;
+    [SerializeField] public string shipNumber { get; private set; }
+    [SerializeField] public string shipName { get; private set; }
+    [SerializeField] public string damage { get; private set; }
+    [SerializeField] public string armor { get; private set; }
+    [SerializeField] public string watchDistance { get; private set; }
+    [SerializeField] public string shootDistance { get; private set; }
 
-    public void SetValues(int damage, int armor, int watchDistance, int shootDistance)
+    public void SetValues(string damage, string armor, string watchDistance, string shootDistance)
     {
-        this.damage += damage;
-        this.armor += armor;
-        this.watchDistance += watchDistance;
-        this.shootDistance += shootDistance;
+        this.damage += Int32.Parse(damage);
+        this.armor += Int32.Parse(armor);
+        this.watchDistance += Int32.Parse(watchDistance);
+        this.shootDistance += Int32.Parse(shootDistance);
         // DebugConsole:
         Debug.Log("Ship stats updated ! ");
     }
 
-    public void RestoreValues(int damage, int armor, int watchDistance, int shootDistance)
+    public void RestoreValues(string damage, string armor, string watchDistance, string shootDistance)
     {
-        this.damage -= damage;
-        this.armor -= armor;
-        this.watchDistance -= watchDistance;
-        this.shootDistance -= shootDistance;
+        this.damage -= Int32.Parse(damage);
+        this.armor -= Int32.Parse(armor);
+        this.watchDistance -= Int32.Parse(watchDistance);
+        this.shootDistance -= Int32.Parse(shootDistance);
         // DebugConsole:
         Debug.Log("Ship stats restored ! ");
     }
 
-    public int GetShipNumber()
+    public string GetShipNumber()
     {
         return this.shipNumber;
     }

@@ -4,35 +4,18 @@ using UnityEngine;
 
 public class PirateScript : MonoBehaviour
 {
-    [SerializeField] private int damage;
-    [SerializeField] private int armor;
-    [SerializeField] private int watchDistance;
-    [SerializeField] private int shootDistance;
-    [SerializeField] private int shipNumber;
     
-    
-    public int GetDamage()
-    {
-        return this.damage;
-    }
-    public int GetArmor()
-    {
-        return this.armor;
-    }
-    public int GetWatchDistance()
-    {
-        return this.watchDistance;
-    }
-    public int GetShootDistance()
-    {
-        return this.shootDistance;
-    }
+    [SerializeField] public string pirateName { get; private set; }
+    [SerializeField] public string special { get; private set; }
+    [SerializeField] public string damage { get; private set; }
+    [SerializeField] public string armor { get; private set; }
+    [SerializeField] public string watchDistance { get; private set; }
+    [SerializeField] public string shootDistance { get; private set; }
+    [SerializeField] public string shipNumber { get; private set; }
+
+
     public void ChangeShipNumber(int num)
     {
-        this.shipNumber = num;
-    }
-    public int GetShipNumber()
-    {
-        return this.shipNumber;
+        this.shipNumber = num.ToString();
     }
 }

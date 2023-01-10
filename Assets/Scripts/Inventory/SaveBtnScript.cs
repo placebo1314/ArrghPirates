@@ -23,40 +23,47 @@ public class SaveBtnScript : MonoBehaviour
 		this.ships = new List<GameObject>();
 		for(int i = 0; i < shipsSlot.transform.childCount; i++)
 			this.ships.Add(shipsSlot.transform.GetChild(i).gameObject );
-		
-// DebugConsole:
-	    Debug.Log("Start SaveBtnScript");
-	    PlayerStatModel loadedData = loadData<PlayerStatModel>("stats");
-	    // for (var s = 0; s < loadedData.ships.Count; s++)
-	    // {
-		   //  int slotNo = 0;
-		    //for (var p = 0; p < loadedData.pirates.Count; p++)
-			    //if (loadedData.pirates[p].GetComponent<PirateScript>().shipNumber == loadedData.ships[s].GetComponent<ShipScript>().shipNumber)
-			    //{
-				    //Vector3 shipSlotVec = GetSonByIndex(ship, 0).GetComponent<RectTransform>().transform.position;
-			    //}
-	    //}
-	    //if(loadedData != null)
-	    //{
-	    //foreach(var pirate in loadedData.pirates)
-	    //GameObject ship = null;
-	    //if(loadedData.pirate1 != 0)
-	    //{
-	    //if(loadedData.pirate1 == 1)
-	    //ship = ship1;
-	    //else
-	    //ship = ship2;
-	    //Vector3 shipSlotVec = GetSonByIndex(ship, 0).GetComponent<RectTransform>().transform.position;
-	    //pirate1.transform.position = shipSlotVec;
-	    //}
-	    //}
-	    //Debug.Log(shipSlotVec);
 
-	    //if(loadedData.pirate2 != 0)
-	    //if(loadedData.pirate3 != 0)
-	    //if(loadedData.pirate4 != 0)
-	    //Debug.Log(GetSonByIndex(ship1, 1).transform);
-    }
+	    PlayerStatModel loadedData = loadData<PlayerStatModel>("stats");
+		foreach (GameObject ship in ships)
+		{
+			int slotNo = 0;
+			foreach (PirateModel pirate in loadedData.pirates)
+			{
+                if (pirate.shipNumber != "")
+				{
+					var pirateGameObject = GameObject.Find(pirate.pirateName);
+					if (pirate.shipNumber == ship.GetComponent<ShipScript>().shipNumber)
+					{
+						Vector3 shipSlotVec = GetSonByIndex(ship, slotNo).GetComponent<RectTransform>().transform.position;
+						pirateGameObject.transform.position = shipSlotVec;
+						slotNo++;
+					}
+				}
+			}
+		}
+
+		//if(loadedData != null)
+		//{
+		//foreach(var pirate in loadedData.pirates)
+		//GameObject ship = null;
+		//if(loadedData.pirate1 != 0)
+		//{
+		//if(loadedData.pirate1 == 1)
+		//ship = ship1;
+		//else
+		//ship = ship2;
+		//Vector3 shipSlotVec = GetSonByIndex(ship, 0).GetComponent<RectTransform>().transform.position;
+		//pirate1.transform.position = shipSlotVec;
+		//}
+		//}
+		//Debug.Log(shipSlotVec);
+
+		//if(loadedData.pirate2 != 0)
+		//if(loadedData.pirate3 != 0)
+		//if(loadedData.pirate4 != 0)
+		//Debug.Log(GetSonByIndex(ship1, 1).transform);
+	}
 
     public void SaveData()
     {

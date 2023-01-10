@@ -1,18 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 
 public class PirateScript : MonoBehaviour
 {
-    [SerializeField] public string pirateName; // { get; private set; }
+    [SerializeField] public string pirateName;
     [SerializeField] public string special;
     [SerializeField] public string damage;
     [SerializeField] public string armor;
     [SerializeField] public string watchDistance;
     [SerializeField] public string shootDistance;
     [SerializeField] public string shipNumber;
-
 
     public void ChangeShipNumber(string num)
     {
@@ -22,7 +18,7 @@ public class PirateScript : MonoBehaviour
     {
         return new PirateModel()
         {
-            pirateName = this.pirateName,
+            pirateName = this.name,
             special = this.special,
             damage = this.damage,
             armor = this.armor,
@@ -31,5 +27,4 @@ public class PirateScript : MonoBehaviour
             shipNumber = this.shipNumber
         };
     }
-    
 }

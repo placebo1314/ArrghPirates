@@ -1,14 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class PirateModel
 {
-    [SerializeField] public string pirateName; // { get; private set; }
-    [SerializeField] public string special;
-    [SerializeField] public string damage;
-    [SerializeField] public string armor;
-    [SerializeField] public string watchDistance;
-    [SerializeField] public string shootDistance;
-    [SerializeField] public string shipNumber;
+    public string pirateName;
+    public string special;
+    public string damage;
+    public string armor;
+    public string watchDistance;
+    public string shootDistance;
+    public string shipNumber;
 }

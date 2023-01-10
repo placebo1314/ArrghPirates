@@ -9,7 +9,6 @@ using Newtonsoft.Json;
 
 public class DataSaver
 {
-    //Save Data
     public static void saveData<T>(T dataToSave, string dataFileName)
     {
         string tempPath = Path.Combine(Application.persistentDataPath, "data");
@@ -17,9 +16,6 @@ public class DataSaver
 
         //Convert To Json then to bytes
 		string jsonData = JsonConvert.SerializeObject( dataToSave );
-// DebugConsole:
-		Debug.Log("jsonData from DataSaver.Save : ");
-		Debug.Log(jsonData);
         byte[] jsonByte = Encoding.ASCII.GetBytes(jsonData);
 
         //Create Directory if it does not exist
@@ -39,8 +35,7 @@ public class DataSaver
             Debug.LogWarning("Error: " + e.Message);
         }
     }
-
-    //Load Data
+    
     public static T loadData<T>(string dataFileName)
     {
         string tempPath = Path.Combine(Application.persistentDataPath, "data");
@@ -79,11 +74,9 @@ public class DataSaver
 
         //Convert to Object
         //object resultValue = JsonUtility.FromJson<T>(jsonData);
-        //Debug.Log(resultValue);
         T result = JsonConvert.DeserializeObject<T>(jsonData);
         return result;
-
-        //Debug.Log((T)Convert.ChangeType(resultValue, typeof(T)));
+        
         //return (T)Convert.ChangeType(resultValue, typeof(T));
     }
 

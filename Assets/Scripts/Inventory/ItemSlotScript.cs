@@ -14,7 +14,8 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
 
         GameObject ship = eventData.pointerCurrentRaycast.gameObject.transform.parent.gameObject;
         PirateScript pirate = eventData.pointerDrag.GetComponent<PirateScript>();
-        ship.GetComponent<ShipScript>().SetValues(pirate.GetDamage(), pirate.GetArmor(), pirate.GetWatchDistance(), pirate.GetShootDistance());
-        pirate.ChangeShipNumber(ship.GetComponent<ShipScript>().GetShipNumber());
+
+        //ship.GetComponent<ShipScript>().SetValues(pirate.damage, pirate.armor, pirate.GetWatchDistance(), pirate.GetShootDistance());
+        pirate.ChangeShipNumber(ship.GetComponent<ShipScript>().shipNumber);
     }
 }

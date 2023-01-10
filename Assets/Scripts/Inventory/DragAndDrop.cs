@@ -24,7 +24,7 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     public void OnBeginDrag(PointerEventData eventData)
     {
         //if has Ship kimínuszolni ! ! ! ...???
-        eventData.pointerCurrentRaycast.gameObject.GetComponent<PirateScript>().ChangeShipNumber(0);
+        eventData.pointerCurrentRaycast.gameObject.GetComponent<PirateScript>().ChangeShipNumber("0");
         canvasGroup.alpha = .6f;
         canvasGroup.blocksRaycasts = false;
         Debug.Log("OnBeginDrag Object");

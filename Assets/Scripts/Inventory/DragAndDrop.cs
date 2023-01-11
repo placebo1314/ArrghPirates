@@ -5,14 +5,16 @@ using UnityEngine.EventSystems;
 
 public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    [SerializeField] private Canvas canvas;
-    [SerializeField] private PirateScript pirateScript;
-    private CanvasGroup canvasGroup;
+    private Canvas canvas;
+    //public PirateScript pirateScript;
+    public CanvasGroup canvasGroup;
     private RectTransform rectTransform;
 
 
     private void Awake()
     {
+        //pirateScript = GetComponent<PirateScript>();
+        canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
     }
@@ -23,10 +25,10 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        //if has Ship kimínuszolni ! ! ! ...???
-        eventData.pointerCurrentRaycast.gameObject.GetComponent<PirateScript>().ChangeShipNumber("0");
+        eventData.pointerCurrentRaycast.gameObject.GetComponent<PirateScript>().ChangeShipNumber("");
         canvasGroup.alpha = .6f;
         canvasGroup.blocksRaycasts = false;
+        eventData.pointerCurrentRaycast.gameObject.transform.SetParent(canvas.GetComponent<Transform>());
         Debug.Log("OnBeginDrag Object");
         Debug.Log(eventData.pointerCurrentRaycast.gameObject);
         Debug.Log("Object Parent");

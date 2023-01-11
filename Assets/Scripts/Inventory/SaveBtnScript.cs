@@ -15,7 +15,7 @@ public class SaveBtnScript : MonoBehaviour
 
     void Start()
     {
-		GameObject piratesSlot = GameObject.Find("Pirates");
+		GameObject piratesSlot = GameObject.Find("Content");
 		this.pirates = new List<GameObject>();
 		for(int i = 0; i < piratesSlot.transform.childCount; i++)
 			this.pirates.Add(piratesSlot.transform.GetChild(i).gameObject );

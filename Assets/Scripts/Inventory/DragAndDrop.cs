@@ -28,13 +28,12 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
         eventData.pointerCurrentRaycast.gameObject.GetComponent<PirateScript>().ChangeShipNumber("");
         canvasGroup.alpha = .6f;
         canvasGroup.blocksRaycasts = false;
-        eventData.pointerCurrentRaycast.gameObject.transform.SetParent(canvas.GetComponent<Transform>());
+        eventData.pointerCurrentRaycast.gameObject.transform.SetParent(GameObject.Find("ItemBag").GetComponent<Transform>());
         Debug.Log("OnBeginDrag Object");
         Debug.Log(eventData.pointerCurrentRaycast.gameObject);
         Debug.Log("Object Parent");
         Debug.Log(eventData.pointerCurrentRaycast.gameObject.transform.parent);
-        Debug.Log("eventData");
-        
+
     }
     
     public void OnEndDrag(PointerEventData eventData)

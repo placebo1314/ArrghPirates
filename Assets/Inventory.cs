@@ -17,6 +17,7 @@ public class Inventory : MonoBehaviour
         {
             GameObject newPirate = Instantiate(prefab, tf);
             newPirate.name = pirate.pirateName;
+            newPirate.GetComponent<PirateScript>().shipNumber = pirate.shipNumber;
 
             //if (newPirate.TryGetComponent<ScrollItemView>(out ScrollItemView item))
             //item.ChangePirate(pirate);
@@ -26,6 +27,11 @@ public class Inventory : MonoBehaviour
         this.pirates = new List<GameObject>();
         for (int i = 0; i < piratesSlot.transform.childCount; i++)
             this.pirates.Add(piratesSlot.transform.GetChild(i).gameObject);
+        
+        piratesSlot = GameObject.Find("ItemBag");
+        for (int i = 0; i < piratesSlot.transform.childCount; i++)
+            this.pirates.Add(piratesSlot.transform.GetChild(i).gameObject);
+        
         GameObject shipsSlot = GameObject.Find("ShipSlots");
         this.ships = new List<GameObject>();
         for (int i = 0; i < shipsSlot.transform.childCount; i++)
@@ -42,6 +48,9 @@ public class Inventory : MonoBehaviour
                     if (pirate.shipNumber == ship.GetComponent<ShipScript>().shipNumber)
                     {
                         Vector3 shipSlotVec = GetSonByIndex(ship, slotNo).GetComponent<RectTransform>().transform.position;
+                        pirateGameObject.transform.SetParent(GameObject.Find("ItemBag").GetComponent<Transform>());
+                        pirateGameObject.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 0.5f);
+                        pirateGameObject.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 0.5f);
                         pirateGameObject.transform.position = shipSlotVec;
                         pirateGameObject.GetComponent<PirateScript>().shipNumber = pirate.shipNumber;
                         slotNo++;
@@ -52,7 +61,17 @@ public class Inventory : MonoBehaviour
     }
 
     public void SaveData()
-    {
+    { 
+  //Bááálint!! RefactorTime!! XD (Refresh, new pirates, 26.row)
+        this.pirates = new List<GameObject>();
+        //From Content:
+        GameObject piratesSlot = GameObject.Find("Content");
+        for (int i = 0; i < piratesSlot.transform.childCount; i++)
+            this.pirates.Add(piratesSlot.transform.GetChild(i).gameObject);
+        //From ItemBag:
+        piratesSlot = GameObject.Find("ItemBag");
+        for (int i = 0; i < piratesSlot.transform.childCount; i++)
+            this.pirates.Add(piratesSlot.transform.GetChild(i).gameObject);
         PlayerStatModel saveData = new PlayerStatModel();
 
         foreach (var i in pirates)

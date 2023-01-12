@@ -6,5 +6,5 @@ public class PirateModel
     public string armor;
     public string watchDistance;
     public string shootDistance;
-    public string shipNumber;
+    public string shipId;
 }

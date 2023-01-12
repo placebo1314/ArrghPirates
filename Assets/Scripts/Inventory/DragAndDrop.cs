@@ -10,7 +10,6 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     public CanvasGroup canvasGroup;
     private RectTransform rectTransform;
 
-
     private void Awake()
     {
         //pirateScript = GetComponent<PirateScript>();

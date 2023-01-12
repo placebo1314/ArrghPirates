@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ShipModel
 {
-    [SerializeField] public string shipNumber;
+    [SerializeField] public string shipId;
     [SerializeField] public string shipName;
     [SerializeField] public string damage;
     [SerializeField] public string armor;

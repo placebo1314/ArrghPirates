@@ -14,10 +14,10 @@ public class ItemSlotScript : MonoBehaviour, IDropHandler
 
         GameObject ship = eventData.pointerCurrentRaycast.gameObject.transform.parent.gameObject;
         PirateScript pirate = eventData.pointerDrag.GetComponent<PirateScript>();
-        eventData.pointerDrag.GetComponent<RectTransform>().anchorMin =  new Vector2(0.5f, 0.5f);
-        eventData.pointerDrag.GetComponent<RectTransform>().anchorMax =  new Vector2(0.5f, 0.5f);
+        eventData.pointerDrag.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 0.5f);
+        eventData.pointerDrag.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 0.5f);
 
         //ship.GetComponent<ShipScript>().SetValues(pirate.damage, pirate.armor, pirate.GetWatchDistance(), pirate.GetShootDistance());
-        pirate.ChangeShipNumber(ship.GetComponent<ShipScript>().shipNumber);
+        pirate.ChangeShipNumber(ship.GetComponent<ShipScript>().Ship.shipId);
     }
 }

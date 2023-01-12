@@ -7,8 +7,6 @@ using System.IO;
 [Serializable]
 public class PlayerStatModel
 {
-    //PRIVATE ! ! !
 	public List<PirateModel> pirates = new List<PirateModel>();
 	public List<ShipModel> ships = new List<ShipModel>();
-
 }

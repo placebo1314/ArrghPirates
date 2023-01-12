@@ -28,6 +28,7 @@ public class DataSaver
         {
             File.WriteAllBytes(tempPath, jsonByte);
             Debug.Log("Saved Data to: " + tempPath.Replace("/", "\\"));
+            Debug.Log(jsonData);
         }
         catch (Exception e)
         {

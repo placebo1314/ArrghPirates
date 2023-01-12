@@ -9,6 +9,7 @@ public class GetPirateScript : MonoBehaviour
     {
         Transform tf = GameObject.Find("Content").transform;
         GameObject newPirate = Instantiate(prefab, tf);
+        newPirate.GetComponent<PirateScript>().Pirate.pirateName = "Szergej";
         newPirate.name = "Szergej";
     }
 }

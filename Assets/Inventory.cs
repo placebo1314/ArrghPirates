@@ -12,24 +12,25 @@ public class Inventory : MonoBehaviour
 
     void Awake()
     {
-        this.pirates = new List<GameObject>();
         this.ships = new List<GameObject>();
+        GameObject shipsSlot = GameObject.Find("ShipSlots");
+        for (int i = 0; i < shipsSlot.transform.childCount; i++)
+            this.ships.Add(shipsSlot.transform.GetChild(i).gameObject);
 
         PlayerStatModel data = loadData<PlayerStatModel>("stats");
 
         Transform content = GameObject.Find("Content").transform;
         Transform itemBag = GameObject.Find("ItemBag").transform;
 
-        GameObject shipsSlot = GameObject.Find("ShipSlots");
-
         //if (newPirate.TryGetComponent<ScrollItemView>(out ScrollItemView item))
         //item.ChangePirate(pirate);
         GameObject newPirate;
-        List<PirateModel> shiplesses = data.pirates.Where(pirate => pirate.shipId == "").ToList();
+        List<PirateModel> shiplesses = data.pirates.Where(pirate => pirate.shipId == "" || pirate.shipId == null).ToList();
         foreach (PirateModel pirate in shiplesses)
         {
             newPirate = Instantiate(prefab, content);
             newPirate.GetComponent<PirateScript>().Pirate = pirate;
+            newPirate.name = newPirate.GetComponent<PirateScript>().Pirate.pirateName;
         }
 
         foreach (GameObject ship in ships)
@@ -57,6 +58,7 @@ public class Inventory : MonoBehaviour
 
     public void SaveData()
     {
+        this.pirates = new List<GameObject>();
         //From Content:
         GameObject piratesSlot = GameObject.Find("Content");
         for (int i = 0; i < piratesSlot.transform.childCount; i++)

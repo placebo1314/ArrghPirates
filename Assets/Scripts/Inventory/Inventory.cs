@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -22,8 +21,6 @@ public class Inventory : MonoBehaviour
         Transform content = GameObject.Find("Content").transform;
         Transform itemBag = GameObject.Find("ItemBag").transform;
 
-        //if (newPirate.TryGetComponent<ScrollItemView>(out ScrollItemView item))
-        //item.ChangePirate(pirate);
         GameObject newPirate;
         List<PirateModel> shiplesses = data.pirates.Where(pirate => pirate.shipId == "" || pirate.shipId == null).ToList();
         foreach (PirateModel pirate in shiplesses)
@@ -37,33 +34,29 @@ public class Inventory : MonoBehaviour
         {
             int slotNo = 0;
             string shipNumber = ship.GetComponent<ShipScript>().Ship.shipId;
+
             List<PirateModel> crewMembers = data.pirates.Where(pirate => pirate.shipId == shipNumber).ToList();
             
-
             foreach (PirateModel member in crewMembers)
             {
                 newPirate = Instantiate(prefab, itemBag);
 
                 Vector3 shipSlotPosition = GetSonByIndex(ship, slotNo).GetComponent<RectTransform>().transform.position;
                 newPirate.transform.position = shipSlotPosition;
-                // anchor ?
                 newPirate.GetComponent<PirateScript>().Pirate = member;
                 slotNo++;
             }
-                        //pirateGameObject.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 0.5f);
-                        //pirateGameObject.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 0.5f);
-
         }
     }
 
     public void SaveData()
     {
         this.pirates = new List<GameObject>();
-        //From Content:
+
         GameObject piratesSlot = GameObject.Find("Content");
         for (int i = 0; i < piratesSlot.transform.childCount; i++)
             this.pirates.Add(piratesSlot.transform.GetChild(i).gameObject);
-        //From ItemBag:
+        
         piratesSlot = GameObject.Find("ItemBag");
         for (int i = 0; i < piratesSlot.transform.childCount; i++)
             this.pirates.Add(piratesSlot.transform.GetChild(i).gameObject);

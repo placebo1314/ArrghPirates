@@ -1,10 +1,7 @@
 using UnityEngine;
 
-public class ShipScript : MonoBehaviour
+public abstract class ShipScript : MonoBehaviour
 {
-    public ShipModel Ship { get; set; }
-    public void Awake()
-    {
-        this.Ship = new ShipModel();
-    }
+    public abstract ShipModel Ship { get; set; }
+
 }

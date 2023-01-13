@@ -8,14 +8,14 @@ public class PirateModel
     public string shootDistance;
     public string shipId;
 
-    public PirateModel()
-    {
-        pirateName = "";
-        special = "";
-        damage = "";
-        armor = "";
-        watchDistance = "";
-        shootDistance = "";
-        shipId = "";
-    }
+    //public PirateModel()
+    //{
+    //    pirateName = "";
+    //    special = "";
+    //    damage = "";
+    //    armor = "";
+    //    watchDistance = "";
+    //    shootDistance = "";
+    //    shipId = "";
+    //}
 }

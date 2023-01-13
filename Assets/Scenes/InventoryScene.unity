@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028346, g: 0.22571373, b: 0.30692244, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -173,15 +173,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 11746614}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bcca5ffe1e71d0f4684ec7f430e3783c, type: 3}
+  m_Script: {fileID: 11500000, guid: 184439ea689c2884999dabeefa348a60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shipNumber: 1
-  shipName: aaa
-  damage: 0
-  armor: 0
-  watchDistance: 0
-  shootDistance: 0
 --- !u!1 &12749059
 GameObject:
   m_ObjectHideFlags: 0
@@ -864,15 +858,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 590651749}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bcca5ffe1e71d0f4684ec7f430e3783c, type: 3}
+  m_Script: {fileID: 11500000, guid: 6fd62699a5ed5eb4fb80a18b0c05deb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shipNumber: 2
-  shipName: bbb
-  damage: 0
-  armor: 0
-  watchDistance: 0
-  shootDistance: 0
 --- !u!1 &603239156
 GameObject:
   m_ObjectHideFlags: 0

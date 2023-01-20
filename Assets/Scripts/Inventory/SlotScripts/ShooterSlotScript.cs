@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 using static Enums;
@@ -9,5 +7,4 @@ public class ShooterSlotScript : ItemSlotScript
     {
         pirateType = PirateType.Shooter;
     }
-
 }

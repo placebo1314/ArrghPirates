@@ -1471,8 +1471,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PiratePrefab: {fileID: 7063507651965247101, guid: f09afad52fc3c10448cd67cc405e5348, type: 3}
-  ThreeMastedShipPrefab: {fileID: 1829867215570072492, guid: 7fb696a2a8be04d4dab1baed3e373212, type: 3}
-  SingleMastedShipPrefab: {fileID: 1950492799215458985, guid: 63f6831fd42488a4caeca1f2813a1e80, type: 3}
+  ThreeMastedShipPrefab: {fileID: 5291329622044769837, guid: 7fb696a2a8be04d4dab1baed3e373212, type: 3}
+  SingleMastedShipPrefab: {fileID: 7467399347962446595, guid: 63f6831fd42488a4caeca1f2813a1e80, type: 3}
   EmptyShipPrefab: {fileID: 8914502747634750041, guid: 34f73c41e6155804bac978511d120c9e, type: 3}
   DocklessSingleMastedShipPrefab: {fileID: 9068983511097152532, guid: 2b763a06ebbd16547958af0ecaa2c99f, type: 3}
   DocklessThreeMastedShipPrefab: {fileID: 324645071998718836, guid: 060a476c328e2994989425d2c130a64e, type: 3}

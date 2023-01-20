@@ -34,12 +34,18 @@ public class Inventory : MonoBehaviour
         shipBag.SetActive(false);
 
         this.ships = new List<GameObject>();
-        GameObject prefab;
-        GameObject newShip;
 
         PlayerStatModel data = LoadData<PlayerStatModel>("stats");
-        
-        //Setup Docks:
+        //TODO: Pass only the necessary data
+        SetupDocks(data);
+        SetupShipBag(data);
+        SetupShiplessPirates(data);
+        SetupOnBoardPirates(data);
+    }
+
+    private void SetupDocks(PlayerStatModel data)
+    {
+        GameObject prefab;
         for (int i = 0; i < data.DockSize; i++)
         {
             var target = data.ships.Where(x => x.dockNumber == i ).ToList();
@@ -52,7 +58,7 @@ public class Inventory : MonoBehaviour
                 else
                     prefab = EmptyShipPrefab;
 
-                newShip = Instantiate(prefab, Dock.transform);
+                GameObject newShip = Instantiate(prefab, Dock.transform);
                 newShip.GetComponent<ShipScript>().Ship = target[0];
                 newShip.name = target[0].shipName;
                 ships.Add(newShip);
@@ -61,30 +67,35 @@ public class Inventory : MonoBehaviour
                 newShip = Instantiate(EmptyShipPrefab, Dock.transform);
             newShip.GetComponent<ChangeShipScript>().position = i;
         }
-        //Setup ShipsBag:
+    }
+
+    private void SetupShipBag(PlayerStatModel data)
+    {
+        GameObject prefab;
         var shipsInBag = data.ships.Where(x => x.dockNumber == -1).ToList();
         
         foreach(ShipModel ship in shipsInBag)
         {
-				if(ship.shipType == ShipType.ThreeMastedShip)
-					prefab = DocklessThreeMastedShipPrefab;
-				else //if(ship.shipType == "SingleMasted")
-					prefab = DocklessSingleMastedShipPrefab;
-            	newShip = Instantiate(prefab, shipBag.transform);
-                newShip.GetComponent<ShipScript>().Ship = ship;
-                newShip.name = ship.shipName;
-                ships.Add(newShip);
-				//fill slots
-				//for(int _ = 0; n < ship.crew; _++)
-					//GameObject slot = gun.transform.Find("magazine/ammo");
+            if(ship.shipType == ShipType.ThreeMastedShip)
+                prefab = DocklessThreeMastedShipPrefab;
+            else //if(ship.shipType == "SingleMasted")
+                prefab = DocklessSingleMastedShipPrefab;
+            GameObject newShip = Instantiate(prefab, shipBag.transform);
+            newShip.GetComponent<ShipScript>().Ship = ship;
+            newShip.name = ship.shipName;
+            ships.Add(newShip);
+            //fill slots
+            //for(int _ = 0; n < ship.crew; _++)
+            //GameObject slot = gun.transform.Find("magazine/ammo");
             //string filename = "Assets/Images/image_001_0000-removebg";
             //this.ships.Add(newShip);
             //newShip.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = Resources.Load(filename) as Sprite;
         }
         shipBag.SetActive(false);
+    }
 
-
-
+    private void SetupShiplessPirates(PlayerStatModel data)
+    {
         GameObject newPirate;
         List<PirateModel> shiplesses = data.pirates.Where(pirate => pirate.shipId == "" || pirate.shipId == null).ToList();
         foreach (PirateModel pirate in shiplesses)
@@ -93,27 +104,12 @@ public class Inventory : MonoBehaviour
             newPirate.GetComponent<PirateScript>().Pirate = pirate;
             newPirate.name = newPirate.GetComponent<PirateScript>().Pirate.pirateName;
         }
-
-        foreach (GameObject ship in ships)
-        {
-            int slotNo = 0;
-            string shipNumber = ship.GetComponent<ShipScript>().Ship.shipId;
-
-            List<PirateModel> crewMembers = data.pirates.Where(pirate => pirate.shipId == shipNumber).ToList();
-            
-            foreach (PirateModel member in crewMembers)
-            {
-                newPirate = Instantiate(PiratePrefab, pirateBagTransform);
-
-                Vector3 shipSlotPosition = GetSonByIndex(ship, slotNo).GetComponent<RectTransform>().transform.position;
-                newPirate.transform.position = shipSlotPosition;
-                newPirate.GetComponent<PirateScript>().Pirate = member;
-                newPirate.name = newPirate.GetComponent<PirateScript>().Pirate.pirateName;
-                slotNo++;
-            }
-        }
     }
-    
+
+    private void SetupOnBoardPirates(PlayerStatModel data)
+    {
+        var c = 1;
+    }
 
     public void SaveData()
     {

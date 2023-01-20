@@ -15,7 +15,10 @@ public class DataSaver
         tempPath = Path.Combine(tempPath, dataFileName + ".txt");
 
         //Convert To Json then to bytes
-		string jsonData = JsonConvert.SerializeObject( dataToSave );
+		string jsonData = JsonConvert.SerializeObject( dataToSave, Formatting.Indented, new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.All
+        });
         byte[] jsonByte = Encoding.ASCII.GetBytes(jsonData);
 
         //Create Directory if it does not exist
@@ -37,7 +40,7 @@ public class DataSaver
         }
     }
     
-    public static T loadData<T>(string dataFileName)
+    public static T LoadData<T>(string dataFileName)
     {
         string tempPath = Path.Combine(Application.persistentDataPath, "data");
         tempPath = Path.Combine(tempPath, dataFileName + ".txt");
@@ -75,7 +78,10 @@ public class DataSaver
 
         //Convert to Object
         //object resultValue = JsonUtility.FromJson<T>(jsonData);
-        T result = JsonConvert.DeserializeObject<T>(jsonData);
+        T result = JsonConvert.DeserializeObject<T>(jsonData, new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.All
+        });
         return result;
         
         //return (T)Convert.ChangeType(resultValue, typeof(T));

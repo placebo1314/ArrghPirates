@@ -1,9 +1,23 @@
 # Arrgh Pirates Project Status
 
 ## Project Overview
-- Unity project targeting a pirate-themed experience with multiple scenes (`MenuScene`, `SinglePlayBoard`, `InventoryScene`).
+- Unity 2021.3 prototype that mixes a battleship-style cannon board (`SinglePlayBoard`) with WIP inventory and menu scenes (`MenuScene`, `InventoryScene`).
 - Core gameplay scripts sit under `Assets/Scripts`, covering battle board targeting, ship and pirate inventory management, and persistence helpers.
 - Assets include reusable prefabs in `Assets/Resources/Prefabs` and name lists in `Assets/Names` for procedural generation.
+
+## Playability snapshot
+- **Playable loop** – `SinglePlayBoard.unity` runs in the editor: targeting buttons move the reticle, shots animate, hits/misses update the water material, and the HUD text reflects remaining ammo.【F:Assets/Scripts/SelectTarget.cs†L34-L132】【F:Assets/Scripts/TileScript.cs†L26-L73】【F:Assets/Scripts/TopTextScript.cs†L11-L39】
+- **Victory/defeat** – The board tracks hits and ends the round once all ships are sunk or ammo runs out, updating the top text with a win/lose message.【F:Assets/Scripts/SelectTarget.cs†L152-L207】
+- **Menu flow** – `MenuScene.unity` has functional buttons that load the board and inventory scenes through `MenuScript`.【F:Assets/Scripts/Menu/MenuScript.cs†L1-L11】
+- **Inventory scene** – Cannot be played: it expects a saved `PlayerStatModel` file and contains compile errors (`SetupDocks` uses `newShip` outside of scope).【F:Assets/Scripts/Inventory/Inventory.cs†L40-L83】
+
+## How to run
+1. Install **Unity 2021.3.16f1** or a compatible 2021.3 LTS patch.【F:ProjectSettings/ProjectVersion.txt†L1-L2】
+2. Open the project with Unity Hub and load `Assets/Scenes/SinglePlayBoard.unity`.
+3. Press **Play** in the editor; use the on-screen arrow buttons to move and **Tűz** to shoot.
+4. For menu navigation tests, start from `Assets/Scenes/MenuScene.unity` and select the desired destination.
+
+> A standalone build configuration is not present. Run the project directly in the editor.
 
 ## Implemented Systems
 ### Menu & Scene Flow
@@ -25,13 +39,13 @@
 - `PlayerStatModel`, ship subclasses, and pirate models define the saved state for docks, ship stats, and pirate roles.【F:Assets/Scripts/PlayerStatModel.cs†L5-L12】【F:Assets/Scripts/Models/Ships/ShipModel.cs†L1-L32】【F:Assets/Scripts/Models/Pirates/PirateModel.cs†L1-L23】
 
 ## Current Issues & Risks
-- `Inventory.SetupDocks` declares `newShip` inside the `if` branch but uses it afterwards, so the `else` path will not compile and the shared assignment will fail. The loop also assumes `data` is non-null.【F:Assets/Scripts/Inventory/Inventory.cs†L46-L69】
-- `LoadData` can return `null` when no save file exists; the subsequent `Setup*` calls dereference `data`, leading to a runtime `NullReferenceException` on first launch.【F:Assets/Scripts/Inventory/Inventory.cs†L38-L44】【F:Assets/Scripts/DataSaver.cs†L43-L88】
-- `TileScript` never seeds its `Board` dictionary because `SetupStartBoard` is commented out, so features like "BlackWater" detection rely on dynamic key creation and lose initial ship placement data.【F:Assets/Scripts/TileScript.cs†L10-L46】
-- `SelectTarget.Shoot` registers button listeners every time it runs and never removes them, so re-entering the coroutine or reloading the scene would stack duplicate callbacks.【F:Assets/Scripts/SelectTarget.cs†L33-L55】
-- `GetNewItemScript.GetShip` always spawns a three-masted ship prefab, with no logic for other ship classes; `GetRandomName` performs synchronous file I/O from the `Assets` directory, which will break in builds without the raw text assets present.【F:Assets/Scripts/Inventory/GetNewItemScript.cs†L9-L45】
-- Persistence writes hard-coded values (`DockSize = 2`, `Lvl = 1`) when saving, ignoring actual in-game configuration, and the `Inventory` scene lacks implementation for placing pirates already assigned to ships.【F:Assets/Scripts/Inventory/Inventory.cs†L137-L154】【F:Assets/Scripts/Inventory/Inventory.cs†L109-L112】
-- `DragAndDrop.OnEndDrag` assumes `pointerCurrentRaycast` is valid and `ItemSlotScript` exists, so dropping in empty space can throw; the project currently lacks the referenced `ItemSlotScript` implementation in the repository.【F:Assets/Scripts/Inventory/DragAndDrop.cs†L25-L37】
+- `Inventory.SetupDocks` declares `newShip` inside the `if` branch but uses it afterwards, so the `else` path fails to compile; the loop also assumes `data` is non-null.【F:Assets/Scripts/Inventory/Inventory.cs†L46-L83】
+- `LoadData` can return `null` when no save file exists; the subsequent `Setup*` calls dereference `data`, causing a `NullReferenceException` on first launch.【F:Assets/Scripts/Inventory/Inventory.cs†L38-L44】【F:Assets/Scripts/DataSaver.cs†L43-L88】
+- `TileScript.SetupStartBoard` seeds ship positions, but no ship placement UI exists; once a tile is hit the game cannot respawn a new layout without reloading the scene.【F:Assets/Scripts/TileScript.cs†L34-L67】【F:Assets/Scripts/SelectTarget.cs†L98-L148】
+- `SelectTarget` never unwires button listeners, so reloading the scene stacks callbacks and double-fires actions.【F:Assets/Scripts/SelectTarget.cs†L62-L90】
+- `GetNewItemScript.GetShip` always spawns the three-masted prefab, and `GetRandomName` reads from `Assets/Names` at runtime, which fails in a player build without including the raw text assets.【F:Assets/Scripts/Inventory/GetNewItemScript.cs†L9-L45】
+- Persistence writes hard-coded values (`DockSize = 2`, `Lvl = 1`) and omits crew assignments; the inventory scene does not restore pirates already linked to ships.【F:Assets/Scripts/Inventory/Inventory.cs†L109-L154】
+- `DragAndDrop.OnEndDrag` assumes `pointerCurrentRaycast` is valid and references a missing `ItemSlotScript`, causing drops onto empty space to throw at runtime.【F:Assets/Scripts/Inventory/DragAndDrop.cs†L25-L37】
 
 ## Missing or Incomplete Features
 - No enemy AI, ship placement phase, or hit detection beyond marking tiles as "H2"; the board lacks ship spawning logic, so combat is currently target practice without win/loss conditions.【F:Assets/Scripts/SelectTarget.cs†L98-L108】【F:Assets/Scripts/TileScript.cs†L10-L46】
@@ -41,7 +55,8 @@
 
 ## Suggested Next Steps
 1. Provide default player data or guard `Inventory.Awake` against missing saves to prevent startup crashes.
-2. Fix `SetupDocks` variable scoping and flesh out dock population for empty slots.
-3. Implement ship placement and enemy ship logic on the battle board, alongside victory/defeat states.
-4. Add proper event listener cleanup and lifecycle management for UI buttons and drag targets.
-5. Build editor scripts or ScriptableObjects to replace direct file reads for names and stats, ensuring compatibility in builds.
+2. Fix `SetupDocks` scoping, guard against `null` data, and finish the empty-dock fallback to make the scene compile again.
+3. Introduce ship placement and enemy logic so the board becomes a full battleship experience instead of a fixed shooting gallery.
+4. Add lifecycle management for UI listeners and drag targets to avoid duplicate callbacks and null pointer crashes.
+5. Replace runtime file IO for names/stats with ScriptableObjects or resources bundled into the build for platform compatibility.
+6. Capture proper error states in the inventory UI (e.g., missing prefabs) and add editor tools to validate required references.

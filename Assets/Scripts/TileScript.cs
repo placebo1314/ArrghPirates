@@ -7,41 +7,103 @@ public class TileScript : MonoBehaviour
     public Material OriginalWater;
     public Material TargetWater;
     public Material BlackWater;
-    public Dictionary<string, string> Board = new Dictionary<string, string>();
 
-    void Start()
+    public const int Width = 20;
+    public const int Height = 12;
+
+    public enum TileShotResult
     {
-        //SetupStartBoard();
+        Unknown,
+        Miss,
+        Hit
     }
 
-    // Update is called once per frame
-    void Update()
-    {   
+    [System.Serializable]
+    public class BoardTile
+    {
+        public bool HasShip;
+        public TileShotResult ShotResult = TileShotResult.Unknown;
+
+        public bool WasShot => ShotResult != TileShotResult.Unknown;
     }
+
+    public Dictionary<int, BoardTile> Board { get; } = new Dictionary<int, BoardTile>();
+
     public void SetOriginalWater(Renderer target)
     {
         target.sharedMaterial = OriginalWater;
     }
+
     public void SetTargetWater(Renderer target)
     {
         target.sharedMaterial = TargetWater;
     }
+
     public void SetBlackWater(Renderer target)
     {
         target.sharedMaterial = BlackWater;
     }
-    public void SetMaterial(Renderer target, Material material)
+
+    public void SetupStartBoard(IEnumerable<int> shipPositions)
     {
-        target.sharedMaterial = material;
+        Board.Clear();
+
+        int totalTiles = Width * Height;
+        for (int i = 0; i < totalTiles; i++)
+        {
+            Board[i] = new BoardTile();
+        }
+
+        foreach (int position in shipPositions)
+        {
+            if (position < 0 || position >= totalTiles)
+            {
+                Debug.LogWarning($"Ship position {position} is outside of the board and will be ignored.");
+                continue;
+            }
+
+            Board[position].HasShip = true;
+        }
     }
 
-    //public void SetupStartBoard()
-    //{
-    //    for (int i = 1; i <= 240; i++)
-    //        Board.Add(i.ToString(), 0);
-    //    // DebugConsole:
-    //    Debug.Log("FinishedBoardSetup:");
-    //    Debug.Log("Board 0,0: " + Board["1"]);
-    //    Debug.Log("Board 1,0: " + Board["2"]);
-    //}
+    public bool TryGetTile(int position, out BoardTile tile)
+    {
+        return Board.TryGetValue(position, out tile);
+    }
+
+    public void RegisterHit(int position)
+    {
+        if (!Board.TryGetValue(position, out BoardTile tile))
+        {
+            Debug.LogWarning($"Tried to register a hit on invalid position {position}.");
+            return;
+        }
+
+        tile.ShotResult = TileShotResult.Hit;
+    }
+
+    public void RegisterMiss(int position)
+    {
+        if (!Board.TryGetValue(position, out BoardTile tile))
+        {
+            Debug.LogWarning($"Tried to register a miss on invalid position {position}.");
+            return;
+        }
+
+        tile.ShotResult = TileShotResult.Miss;
+    }
+
+    public int CountRemainingShips()
+    {
+        int remaining = 0;
+        foreach (BoardTile tile in Board.Values)
+        {
+            if (tile.HasShip && tile.ShotResult != TileShotResult.Hit)
+            {
+                remaining++;
+            }
+        }
+
+        return remaining;
+    }
 }

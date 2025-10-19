@@ -34,7 +34,7 @@ public abstract class ItemSlotScript : MonoBehaviour, IDropHandler
         }
         else
         {
-            StartCoroutine(textScript.ChangeTextWithTime("Can't do this !", 3));
+            textScript?.ShowTemporaryMessage("Can't do this !", 3f);
             //eventData.pointerDrag.GetComponent<RectTransform>().anchoredPosition = GameObject.Find("Content").GetComponent<RectTransform>().anchoredPosition;
             eventData.pointerDrag.transform.SetParent(GameObject.Find("Content").transform);
         }

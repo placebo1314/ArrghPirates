@@ -1,12 +1,35 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TopTextScript : MonoBehaviour
 {
     public Text TopText;
-    public IEnumerator ChangeTextWithTime(string txt, int duration)
+
+    private Coroutine messageRoutine;
+    private string persistentText = "";
+
+    public void ChangeText(string txt)
+    {
+        persistentText = txt;
+
+        if (messageRoutine == null)
+        {
+            TopText.text = persistentText;
+        }
+    }
+
+    public void ShowTemporaryMessage(string txt, float duration)
+    {
+        if (messageRoutine != null)
+        {
+            StopCoroutine(messageRoutine);
+        }
+
+        messageRoutine = StartCoroutine(ChangeTextWithTime(txt, duration));
+    }
+
+    private IEnumerator ChangeTextWithTime(string txt, float duration)
     {
         float time = 0;
         TopText.text = txt;
@@ -15,11 +38,8 @@ public class TopTextScript : MonoBehaviour
             time += Time.deltaTime;
             yield return null;
         }
-        TopText.text = "";
-    }
 
-    public void ChangeText(string txt)
-    {
-        TopText.text = txt;
+        TopText.text = persistentText;
+        messageRoutine = null;
     }
 }

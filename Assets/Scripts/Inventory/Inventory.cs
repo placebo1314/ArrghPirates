@@ -35,12 +35,7 @@ public class Inventory : MonoBehaviour
 
         this.ships = new List<GameObject>();
 
-        PlayerStatModel data = LoadData<PlayerStatModel>("stats");
-        if (data == null)
-        {
-            Debug.LogWarning("No player save found, creating default in-memory data.");
-            data = CreateDefaultData();
-        }
+        PlayerStatModel data = DataSaver.LoadDataOrDefault("stats", CreateDefaultData);
 
         //TODO: Pass only the necessary data
         SetupDocks(data);
@@ -122,6 +117,7 @@ public class Inventory : MonoBehaviour
     {
         return new PlayerStatModel
         {
+            SaveVersion = 1,
             DockSize = 2,
             Lvl = 1
         };
@@ -163,6 +159,7 @@ public class Inventory : MonoBehaviour
             saveData.ships.Add(shipScript.Ship);
         }
 
+        saveData.SaveVersion = 1;
         saveData.DockSize = 2;
         saveData.Lvl = 1;
 

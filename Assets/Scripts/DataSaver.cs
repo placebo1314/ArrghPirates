@@ -9,16 +9,18 @@ using Newtonsoft.Json;
 
 public class DataSaver
 {
+    private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings
+    {
+        TypeNameHandling = TypeNameHandling.All
+    };
+
     public static void saveData<T>(T dataToSave, string dataFileName)
     {
         string tempPath = Path.Combine(Application.persistentDataPath, "data");
         tempPath = Path.Combine(tempPath, dataFileName + ".txt");
 
         //Convert To Json then to bytes
-		string jsonData = JsonConvert.SerializeObject( dataToSave, Formatting.Indented, new JsonSerializerSettings
-        {
-            TypeNameHandling = TypeNameHandling.All
-        });
+		string jsonData = JsonConvert.SerializeObject(dataToSave, Formatting.Indented, SerializerSettings);
         byte[] jsonByte = Encoding.UTF8.GetBytes(jsonData);
 
         //Create Directory if it does not exist
@@ -83,11 +85,17 @@ public class DataSaver
 
         //Convert to Object
         //object resultValue = JsonUtility.FromJson<T>(jsonData);
-        T result = JsonConvert.DeserializeObject<T>(jsonData, new JsonSerializerSettings
+        try
         {
-            TypeNameHandling = TypeNameHandling.All
-        });
-        return result;
+            T result = JsonConvert.DeserializeObject<T>(jsonData, SerializerSettings);
+            return result;
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning($"Failed to deserialize '{dataFileName}'. Returning default value.");
+            Debug.LogWarning("Error: " + e.Message);
+            return default;
+        }
         
         //return (T)Convert.ChangeType(resultValue, typeof(T));
     }
@@ -125,6 +133,24 @@ public class DataSaver
         }
 
         return success;
+    }
+
+    public static T LoadDataOrDefault<T>(string dataFileName, Func<T> fallbackFactory)
+    {
+        T loadedData = LoadData<T>(dataFileName);
+        if (loadedData != null)
+        {
+            return loadedData;
+        }
+
+        if (fallbackFactory == null)
+        {
+            return default;
+        }
+
+        T fallback = fallbackFactory();
+        Debug.LogWarning($"Using fallback data for '{dataFileName}'.");
+        return fallback;
     }
     
 

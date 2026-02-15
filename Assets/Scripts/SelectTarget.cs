@@ -33,6 +33,12 @@ public class SelectTarget : MonoBehaviour
         Debug.Log("Start SelectTargetScript");
     }
 
+
+    private void OnDestroy()
+    {
+        UnwireButtonListeners();
+    }
+
     public IEnumerator Shoot()
     {
         PrepareNewGame();
@@ -88,6 +94,21 @@ public class SelectTarget : MonoBehaviour
         NegativeYBtn.onClick.AddListener(() => MoveTarget(0, -1));
         ShootBtn.onClick.AddListener(ShootTarget);
         listenersRegistered = true;
+    }
+
+    private void UnwireButtonListeners()
+    {
+        if (!listenersRegistered)
+        {
+            return;
+        }
+
+        PositiveXBtn.onClick.RemoveAllListeners();
+        NegativeXBtn.onClick.RemoveAllListeners();
+        PositiveXYtn.onClick.RemoveAllListeners();
+        NegativeYBtn.onClick.RemoveAllListeners();
+        ShootBtn.onClick.RemoveAllListeners();
+        listenersRegistered = false;
     }
 
     private void MoveTarget(int x, int y)

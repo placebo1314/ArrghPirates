@@ -17,9 +17,24 @@ A standalone build is not configured yet; run the project directly inside the Un
 - `Assets/Resources` – prefabs for ships, pirates, and UI elements.
 - `Assets/Names` – text files that feed random name generation.
 
+
+## Manual gameplay smoke path
+1. Open `Assets/Scenes/MenuScene.unity` and press Play.
+2. Open the board (`SinglePlayBoard`).
+3. Use **W/A/S/D** or arrow keys to move target.
+4. Use **Space** or **Enter** to shoot.
+5. End-state loop:
+   - **R** starts a new match with a fresh fleet layout.
+   - **Esc** returns to `MenuScene`.
+
+## Testing
+- Unity PlayMode smoke tests are available under `Assets/Tests/PlayMode/SceneSmokeTests.cs`.
+- Run from Unity Test Runner (PlayMode), or by Unity CLI in batch mode.
+- See `TESTING.md` for exact commands and CI-oriented headless example.
+
 ## Known limitations
 The current prototype is incomplete:
-- The inventory scene crashes if no prior save file exists and contains compile-time issues in `SetupDocks`.
+- Inventory flow has ongoing stabilization work; verify with PlayMode smoke tests before release changes.
 - Work-in-progress drag-and-drop scripts reference prefabs and components that are missing from the repository.
 - Only a basic targeting loop is implemented; there is no enemy AI or ship placement phase.
 

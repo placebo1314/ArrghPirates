@@ -5,13 +5,6 @@ This repository is a Unity 2021.3 project. It does not contain Avalonia/.NET app
 
 The test setup below focuses on Unity smoke coverage and save-load stabilization checks.
 
-## Manual test checklist (base game)
-- Start from `MenuScene`.
-- Enter board scene and verify target can move with keyboard (W/A/S/D or arrows).
-- Verify shooting with `Space`/`Enter` changes tile state (hit/miss feedback in top text).
-- Verify end-of-match message appears after victory or out-of-ammo.
-- Verify `R` starts a fresh match and `Esc` returns to menu.
-
 ## PlayMode smoke tests
 Added PlayMode smoke tests in `Assets/Tests/PlayMode/SceneSmokeTests.cs` covering:
 - `MenuScene` load

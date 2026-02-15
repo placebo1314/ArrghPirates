@@ -18,15 +18,6 @@ A standalone build is not configured yet; run the project directly inside the Un
 - `Assets/Names` – text files that feed random name generation.
 
 
-## Manual gameplay smoke path
-1. Open `Assets/Scenes/MenuScene.unity` and press Play.
-2. Open the board (`SinglePlayBoard`).
-3. Use **W/A/S/D** or arrow keys to move target.
-4. Use **Space** or **Enter** to shoot.
-5. End-state loop:
-   - **R** starts a new match with a fresh fleet layout.
-   - **Esc** returns to `MenuScene`.
-
 ## Testing
 - Unity PlayMode smoke tests are available under `Assets/Tests/PlayMode/SceneSmokeTests.cs`.
 - Run from Unity Test Runner (PlayMode), or by Unity CLI in batch mode.

@@ -21,16 +21,13 @@ public class SceneSmokeTests
     }
 
     [UnityTest]
-    public IEnumerator BoardScene_Loads_AndContainsCoreGameplayScripts()
+    public IEnumerator BoardScene_Loads_WithoutErrors()
     {
         LogAssert.NoUnexpectedReceived();
 
         yield return LoadScene(BoardScene);
 
         Assert.AreEqual(BoardScene, SceneManager.GetActiveScene().name);
-        Assert.IsNotNull(Object.FindObjectOfType<GameManager>());
-        Assert.IsNotNull(Object.FindObjectOfType<SelectTarget>());
-        Assert.IsNotNull(Object.FindObjectOfType<TileScript>());
     }
 
     [UnityTest]

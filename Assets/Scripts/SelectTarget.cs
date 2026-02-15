@@ -28,20 +28,50 @@ public class SelectTarget : MonoBehaviour
     private bool gameActive;
     private bool listenersRegistered;
 
-    void Start()
-    {
-        Debug.Log("Start SelectTargetScript");
-    }
-
+    public bool IsGameActive => gameActive;
 
     private void OnDestroy()
     {
         UnwireButtonListeners();
     }
 
-    public IEnumerator Shoot()
+    private void Update()
+    {
+        if (!gameActive)
+        {
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+        {
+            MoveTarget(1, 0);
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        {
+            MoveTarget(-1, 0);
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+        {
+            MoveTarget(0, -1);
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+        {
+            MoveTarget(0, 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return))
+        {
+            ShootTarget();
+        }
+    }
+
+    public void BeginMatch()
     {
         PrepareNewGame();
+    }
+
+    public IEnumerator Shoot()
+    {
+        BeginMatch();
 
         while (gameActive)
         {
@@ -49,7 +79,6 @@ public class SelectTarget : MonoBehaviour
         }
 
         ToggleControls(false);
-        Debug.Log("ShootEnd ! ");
     }
 
     private void PrepareNewGame()
@@ -65,6 +94,7 @@ public class SelectTarget : MonoBehaviour
         WireButtonListeners();
         ResetTileVisuals();
         UpdateStatusText();
+        textScript?.ShowTemporaryMessage("Irányítás: WASD/nyilak + Space/Enter", 2f);
 
         if (!gameActive)
         {
@@ -74,11 +104,11 @@ public class SelectTarget : MonoBehaviour
 
     private void ToggleControls(bool value)
     {
-        PositiveXBtn.gameObject.SetActive(value);
-        NegativeXBtn.gameObject.SetActive(value);
-        PositiveXYtn.gameObject.SetActive(value);
-        NegativeYBtn.gameObject.SetActive(value);
-        ShootBtn.gameObject.SetActive(value);
+        if (PositiveXBtn != null) PositiveXBtn.gameObject.SetActive(value);
+        if (NegativeXBtn != null) NegativeXBtn.gameObject.SetActive(value);
+        if (PositiveXYtn != null) PositiveXYtn.gameObject.SetActive(value);
+        if (NegativeYBtn != null) NegativeYBtn.gameObject.SetActive(value);
+        if (ShootBtn != null) ShootBtn.gameObject.SetActive(value);
     }
 
     private void WireButtonListeners()
@@ -88,11 +118,11 @@ public class SelectTarget : MonoBehaviour
             return;
         }
 
-        PositiveXBtn.onClick.AddListener(() => MoveTarget(1, 0));
-        NegativeXBtn.onClick.AddListener(() => MoveTarget(-1, 0));
-        PositiveXYtn.onClick.AddListener(() => MoveTarget(0, 1));
-        NegativeYBtn.onClick.AddListener(() => MoveTarget(0, -1));
-        ShootBtn.onClick.AddListener(ShootTarget);
+        if (PositiveXBtn != null) PositiveXBtn.onClick.AddListener(() => MoveTarget(1, 0));
+        if (NegativeXBtn != null) NegativeXBtn.onClick.AddListener(() => MoveTarget(-1, 0));
+        if (PositiveXYtn != null) PositiveXYtn.onClick.AddListener(() => MoveTarget(0, 1));
+        if (NegativeYBtn != null) NegativeYBtn.onClick.AddListener(() => MoveTarget(0, -1));
+        if (ShootBtn != null) ShootBtn.onClick.AddListener(ShootTarget);
         listenersRegistered = true;
     }
 
@@ -103,11 +133,11 @@ public class SelectTarget : MonoBehaviour
             return;
         }
 
-        PositiveXBtn.onClick.RemoveAllListeners();
-        NegativeXBtn.onClick.RemoveAllListeners();
-        PositiveXYtn.onClick.RemoveAllListeners();
-        NegativeYBtn.onClick.RemoveAllListeners();
-        ShootBtn.onClick.RemoveAllListeners();
+        if (PositiveXBtn != null) PositiveXBtn.onClick.RemoveAllListeners();
+        if (NegativeXBtn != null) NegativeXBtn.onClick.RemoveAllListeners();
+        if (PositiveXYtn != null) PositiveXYtn.onClick.RemoveAllListeners();
+        if (NegativeYBtn != null) NegativeYBtn.onClick.RemoveAllListeners();
+        if (ShootBtn != null) ShootBtn.onClick.RemoveAllListeners();
         listenersRegistered = false;
     }
 
@@ -257,7 +287,6 @@ public class SelectTarget : MonoBehaviour
         }
 
         Bullet.SetActive(true);
-        Debug.Log("BulletActivate");
         float time = 0f;
         Vector3 start = aPos.position;
         Vector3 end = tiles[targetIndex].transform.position;
@@ -271,7 +300,6 @@ public class SelectTarget : MonoBehaviour
         }
 
         Bullet.SetActive(false);
-        Debug.Log("BulletDeActivate");
     }
 
     private void UpdateStatusText()
@@ -289,8 +317,8 @@ public class SelectTarget : MonoBehaviour
     {
         gameActive = false;
         string message = victory
-            ? "Győzelem! Az ellenséges flottát a mélybe küldtük."
-            : "Elfogyott a lőszer, vissza kell vonulnunk!";
+            ? "Győzelem! Az ellenséges flottát a mélybe küldtük. Nyomj R-t az új csatához."
+            : "Elfogyott a lőszer, vissza kell vonulnunk! Nyomj R-t az új csatához.";
 
         textScript?.ChangeText(message);
         ToggleControls(false);

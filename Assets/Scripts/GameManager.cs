@@ -1,33 +1,71 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public SelectTarget selectTarget;
     public TileScript tileScript;
-    // Start is called before the first frame update
-    void Start()
-    {
-        // DebugConsole:
-        Debug.Log("Manager start ");
+    public bool useRandomFleet = true;
+    public int randomFleetSeed = 0;
 
-        if (tileScript != null)
+    private void Start()
+    {
+        TryAutoWireReferences();
+        StartMatch();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            tileScript.SetupStartBoard(BoardLayouts.BasicFleet);
+            StartMatch();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene("MenuScene");
+        }
+    }
+
+    public void StartMatch()
+    {
+        if (tileScript == null)
+        {
+            Debug.LogWarning("TileScript reference missing on GameManager; the board will stay empty.");
+            return;
+        }
+
+        var layout = useRandomFleet
+            ? BoardLayouts.GenerateRandomFleet(randomFleetSeed == 0 ? System.Environment.TickCount : randomFleetSeed)
+            : BoardLayouts.BasicFleet;
+
+        tileScript.SetupStartBoard(layout);
+
+        if (selectTarget != null)
+        {
+            selectTarget.BeginMatch();
         }
         else
         {
-            Debug.LogWarning("TileScript reference missing on GameManager; the board will stay empty.");
+            Debug.LogWarning("SelectTarget reference missing on GameManager.");
         }
-
-        StartCoroutine(selectTarget.Shoot());
-        Debug.Log("Manager end ");
     }
 
-    // Update is called once per frame
-    void Update()
+    private void TryAutoWireReferences()
     {
+        if (tileScript == null)
+        {
+            tileScript = FindObjectOfType<TileScript>();
+        }
 
+        if (selectTarget == null)
+        {
+            selectTarget = FindObjectOfType<SelectTarget>();
+        }
+
+        if (selectTarget != null && selectTarget.tileScript == null)
+        {
+            selectTarget.tileScript = tileScript;
+        }
     }
 }

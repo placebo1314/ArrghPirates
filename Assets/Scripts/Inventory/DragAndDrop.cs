@@ -39,7 +39,14 @@ public class DragAndDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, ID
     {
         canvasGroup.alpha = 1;
         canvasGroup.blocksRaycasts = true;
-        if(eventData.pointerCurrentRaycast.gameObject.GetComponent<ItemSlotScript>() == null)
+        GameObject dropTarget = eventData.pointerCurrentRaycast.gameObject;
+        if (dropTarget == null)
+        {
+            eventData.pointerDrag.transform.SetParent(GameObject.Find("Content").transform);
+            return;
+        }
+
+        if (dropTarget.GetComponent<ItemSlotScript>() == null)
             eventData.pointerDrag.transform.SetParent(GameObject.Find("Content").transform);
     }
 }

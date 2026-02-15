@@ -36,6 +36,12 @@ public class Inventory : MonoBehaviour
         this.ships = new List<GameObject>();
 
         PlayerStatModel data = LoadData<PlayerStatModel>("stats");
+        if (data == null)
+        {
+            Debug.LogWarning("No player save found, creating default in-memory data.");
+            data = CreateDefaultData();
+        }
+
         //TODO: Pass only the necessary data
         SetupDocks(data);
         SetupShipBag(data);
@@ -48,6 +54,7 @@ public class Inventory : MonoBehaviour
         GameObject prefab;
         for (int i = 0; i < data.DockSize; i++)
         {
+            GameObject newShip;
             var target = data.ships.Where(x => x.dockNumber == i ).ToList();
             if (target.Count == 1)
             {
@@ -58,7 +65,7 @@ public class Inventory : MonoBehaviour
                 else
                     prefab = EmptyShipPrefab;
 
-                GameObject newShip = Instantiate(prefab, Dock.transform);
+                newShip = Instantiate(prefab, Dock.transform);
                 newShip.GetComponent<ShipScript>().Ship = target[0];
                 newShip.name = target[0].shipName;
                 ships.Add(newShip);
@@ -108,7 +115,16 @@ public class Inventory : MonoBehaviour
 
     private void SetupOnBoardPirates(PlayerStatModel data)
     {
-        var c = 1;
+        // TODO: Render pirates attached to docked ships into ship slots.
+    }
+
+    private PlayerStatModel CreateDefaultData()
+    {
+        return new PlayerStatModel
+        {
+            DockSize = 2,
+            Lvl = 1
+        };
     }
 
     public void SaveData()

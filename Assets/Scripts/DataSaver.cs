@@ -19,7 +19,7 @@ public class DataSaver
         {
             TypeNameHandling = TypeNameHandling.All
         });
-        byte[] jsonByte = Encoding.ASCII.GetBytes(jsonData);
+        byte[] jsonByte = Encoding.UTF8.GetBytes(jsonData);
 
         //Create Directory if it does not exist
         if (!Directory.Exists(Path.GetDirectoryName(tempPath)))
@@ -72,7 +72,12 @@ public class DataSaver
         }
 
         //Convert to json string
-        string jsonData = Encoding.ASCII.GetString(jsonByte);
+        if (jsonByte == null || jsonByte.Length == 0)
+        {
+            return default(T);
+        }
+
+        string jsonData = Encoding.UTF8.GetString(jsonByte);
         Debug.Log("LoadedData : ");
         Debug.Log(jsonData);
 

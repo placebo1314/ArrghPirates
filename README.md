@@ -26,3 +26,7 @@ The current prototype is incomplete:
 See `GAME_STATUS.md` for a detailed feature assessment and suggested follow-up work.
 
 For a detailed Hungarian technical audit and roadmap focused on evolving this prototype into a dynamic pirate torpedo game, see `Docs/TECH_AUDIT_HU.md`.
+
+
+For a mobile-first feature backlog and Google Play release plan in Hungarian, see `Docs/PRODUCT_PLAN_MOBILE_HU.md`.
+

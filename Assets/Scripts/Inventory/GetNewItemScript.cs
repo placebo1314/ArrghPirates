@@ -10,13 +10,20 @@ public class GetNewItemScript : MonoBehaviour
 {
     public void GetShip()
     {
-        Transform tf = GameObject.Find("Inventory").GetComponent<Inventory>().shipBag.transform;
-        GameObject newShip = Instantiate(GameObject.Find("Inventory").GetComponent<Inventory>().DocklessThreeMastedShipPrefab, tf);
-        newShip.GetComponent<ShipScript>().Ship = new ThreeMastedShip();
+        Inventory inventory = GameObject.Find("Inventory").GetComponent<Inventory>();
+        Transform tf = inventory.shipBag.transform;
+
+        bool spawnThreeMasted = Random.value > 0.5f;
+        GameObject prefab = spawnThreeMasted
+            ? inventory.DocklessThreeMastedShipPrefab
+            : inventory.DocklessSingleMastedShipPrefab;
+
+        GameObject newShip = Instantiate(prefab, tf);
+        newShip.GetComponent<ShipScript>().Ship = spawnThreeMasted ? new ThreeMastedShip() : new SingleMastedShip();
         string newName = GetRandomName("Ship");
 
         newShip.GetComponent<ShipScript>().Ship.shipName = newName;
-        newShip.GetComponent<ShipScript>().Ship.shipType = ShipType.ThreeMastedShip;
+        newShip.GetComponent<ShipScript>().Ship.shipType = spawnThreeMasted ? ShipType.ThreeMastedShip : ShipType.SingleMastedShip;
 
         newShip.name = newName;
     }

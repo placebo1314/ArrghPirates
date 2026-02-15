@@ -24,3 +24,5 @@ The current prototype is incomplete:
 - Only a basic targeting loop is implemented; there is no enemy AI or ship placement phase.
 
 See `GAME_STATUS.md` for a detailed feature assessment and suggested follow-up work.
+
+For a detailed Hungarian technical audit and roadmap focused on evolving this prototype into a dynamic pirate torpedo game, see `Docs/TECH_AUDIT_HU.md`.
